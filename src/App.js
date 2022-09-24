@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import {connect} from 'react-redux';
+import {addEmail } from './redux/actions';
 
-function App() {
+class App extends React.Component{
+  state={
+    emailLocal:'',
+  }
+  handleChange=({target:{name,value}})=>{
+this.setState({[name]:value});
+  }
+
+  handleClick=()=>{
+    const {emailLocal}=this.state;
+    const {dispatch}=this.props;
+    dispatch(addEmail(emailLocal));
+  }
+  render(){
+    const{emailGlobal}=this.props;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Teste</h1>
+      <label htmlFor='email'>
+        <input type='text' name='emailLocal' id='email' onChange={this.handleChange}/>
+      </label>
+      <button type='button' onClick={this.handleClick}>Salvar</button>
+       <h2>{emailGlobal}</h2>
     </div>
   );
 }
+}
+const mapStateToProps=(state)=>({
+emailGlobal:state.loginReducer.emailGlobal,
 
-export default App;
+})
+
+export default connect(mapStateToProps,null)(App);
